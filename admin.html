@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>管理者画面</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "あなたのAPIキー",
+  authDomain: "プロジェクトID.firebaseapp.com",
+  databaseURL: "https://プロジェクトID-default-rtdb.firebaseio.com",
+  projectId: "プロジェクトID",
+  storageBucket: "プロジェクトID.appspot.com",
+  messagingSenderId: "xxxx",
+  appId: "xxxx"
+};
+firebase.initializeApp(firebaseConfig);
+</script>
+</head>
+<body>
+<h2>管理者画面</h2>
+<input id="search" placeholder="ユーザー名で検索">
+<button id="searchBtn">検索</button>
+<button id="refreshBtn">全員表示</button>
+<div id="playersList"></div>
+
+<script src="admin.js"></script>
+</body>
+</html>

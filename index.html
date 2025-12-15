@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>スロット ログイン</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "あなたのAPIキー",
+  authDomain: "プロジェクトID.firebaseapp.com",
+  databaseURL: "https://プロジェクトID-default-rtdb.firebaseio.com",
+  projectId: "プロジェクトID",
+  storageBucket: "プロジェクトID.appspot.com",
+  messagingSenderId: "xxxx",
+  appId: "xxxx"
+};
+firebase.initializeApp(firebaseConfig);
+</script>
+</head>
+<body>
+<h2>スロット ログイン</h2>
+<input id="username" placeholder="ユーザー名（新規登録のみ）"><br>
+<input id="email" placeholder="メール"><br>
+<input id="password" placeholder="パスワード" type="password"><br>
+<button id="loginBtn">ログイン</button>
+<button id="registerBtn">新規登録</button>
+<div id="msg"></div>
+
+<script>
+const loginBtn = document.getElementById("loginBtn");
+const registerBtn = document.getElementById("registerBtn");
+const msg = document.getElementById("msg");
+
+loginBtn.onclick = () => {
+  const email = document.getElementById("email").value;
+  const pass = document.getElementById("password").value;
+  firebase.auth().signInWithEmailAndPassword(email, pass)
+    .then(user => {
+      const uid = user.user.uid;
+      localStorage.setItem("currentPlayer", uid);
+      location.href = "game.html";
+    })
+    .catch(err => msg.textContent = err.message);
+};
+
+registerBtn.onclick = () => {
+  const email = document.getElementById("email").value;
+  const pass = document.getElementById("password").value;
+  const username = document.getElementById("username").value || "名無し";
+  firebase.auth().createUserWithEmailAndPassword(email, pass)
+    .then(user => {
+      const uid = user.user.uid;
+      firebase.database().ref("players/"+uid).set({
+        username: username,
+        email: email,
+        coin: 100,
+        setting: 3,
+        kakuhen: false
+      });
+      localStorage.setItem("currentPlayer", uid);
+      location.href = "game.html";
+    })
+    .catch(err => msg.textContent = err.message);
+};
+</script>
+</body>
+</html>
